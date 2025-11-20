@@ -10,9 +10,11 @@ import chromadb
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.llms import Ollama
-from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 import torch
 import warnings
 warnings.filterwarnings('ignore')
@@ -158,7 +160,7 @@ class ModernRoboticsRAGGPU:
             return False
     
     def setup_qa_chain(self):
-        """Setup the QA chain with Ollama."""
+        """Setup the QA chain with Ollama using LCEL."""
         print("🔗 Setting up QA chain...")
         
         llm = Ollama(
@@ -166,14 +168,38 @@ class ModernRoboticsRAGGPU:
             temperature=0.7,
         )
         
-        self.qa_chain = RetrievalQA.from_chain_type(
-            llm=llm,
-            chain_type="stuff",
-            retriever=self.vectorstore.as_retriever(
-                search_kwargs={"k": 5}
-            ),
-            return_source_documents=True,
+        # Create prompt template
+        template = """Use the following pieces of context to answer the question at the end.
+If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+Context:
+{context}
+
+Question: {question}
+
+Answer:"""
+        
+        prompt = PromptTemplate(
+            template=template,
+            input_variables=["context", "question"]
         )
+        
+        # Create retriever
+        retriever = self.vectorstore.as_retriever(search_kwargs={"k": 5})
+        
+        # Format documents function
+        def format_docs(docs):
+            return "\n\n".join(doc.page_content for doc in docs)
+        
+        # Create chain using LCEL
+        self.qa_chain = (
+            {"context": retriever | format_docs, "question": RunnablePassthrough()}
+            | prompt
+            | llm
+            | StrOutputParser()
+        )
+        
+        self.retriever = retriever  # Store for source documents
         
         print("✓ QA chain ready\n")
     
@@ -205,10 +231,11 @@ class ModernRoboticsRAGGPU:
         print(f"\n💭 Query: {question}")
         print("🤔 Thinking...\n")
         
-        result = self.qa_chain.invoke({"query": question})
+        # Get answer from chain
+        answer = self.qa_chain.invoke(question)
         
-        answer = result["result"]
-        sources = result.get("source_documents", [])
+        # Get source documents separately
+        sources = self.retriever.invoke(question)
         
         print("📝 Answer:")
         print("-" * 70)
