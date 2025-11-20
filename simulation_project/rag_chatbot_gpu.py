@@ -8,11 +8,11 @@ import sys
 from pathlib import Path
 import chromadb
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.llms import Ollama
 from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import Chroma
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import torch
 import warnings
 warnings.filterwarnings('ignore')
