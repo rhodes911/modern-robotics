@@ -2,3 +2,81 @@
 *build/
 *dist/
 *.egg-info*
+
+# CoppeliaSim Installers and Large Files
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+.installed.cfg
+*.egg
+MANIFEST
+.venv
+venv/
+ENV/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Vector Databases (ChromaDB)
+chroma_db/
+chroma_db_gpu/
+*.tar.gz
+
+# Logs and temp files
+logs/
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# CoppeliaSim scenes (working files)
+*.ttt.bak*
+*_backup.ttt
+
+# Large data files
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+
+# Videos and images (if generated)
+*.mp4
+*.avi
+*.mov
+video_frames/
+
+# Model weights and large ML files
+*.pth
+*.pt
+*.onnx
+*.pb
+ml_models/
+
+# Compressed archives
+*.zip
+*.7z
+*.rar
