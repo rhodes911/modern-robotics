@@ -45,13 +45,19 @@ class ModernRoboticsRAG:
     def find_pdfs(self):
         """Find all PDF files in the repository."""
         pdf_files = []
-        # For now, just use MRlib.pdf for faster testing
+        
+        # Add main Modern Robotics textbook
+        mr_pdf = self.pdf_directory / "MR.pdf"
+        if mr_pdf.exists():
+            pdf_files.append(mr_pdf)
+            print(f"   [DEBUG] Found: {mr_pdf}")
+        
+        # Add Modern Robotics library reference
         mrlib = self.pdf_directory / "doc" / "MRlib.pdf"
         if mrlib.exists():
             pdf_files.append(mrlib)
             print(f"   [DEBUG] Found: {mrlib}")
-        else:
-            print(f"   [DEBUG] MRlib.pdf not found at: {mrlib}")
+        
         return pdf_files
     
     def load_and_process_pdfs(self):

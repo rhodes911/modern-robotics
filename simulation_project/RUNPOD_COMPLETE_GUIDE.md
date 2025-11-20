@@ -112,29 +112,51 @@ GPU Name: NVIDIA GeForce RTX 3090
 
 ## Step 5: Upload PDFs to Runpod
 
-### Option A: Using Web Interface
+### Option A: Clone from GitHub (EASIEST - PDFs already in your repo!)
 
-1. In Runpod dashboard, click your pod
-2. Click **"File Browser"** or **"Code Server"**
-3. Navigate to `/workspace/modern-robotics/`
-4. Upload `MR.pdf` and `doc/MRlib.pdf`
-
-### Option B: Using SCP (From Your Local Machine)
+Since your PDFs are already in the GitHub repo, just pull them:
 
 ```bash
-# Get pod connection info
-# SSH: root@<pod-ip> -p <port>
+# In your Runpod Web Terminal
+cd /workspace/modern-robotics
+git pull
 
-# Upload PDFs
-scp -P <port> MR.pdf root@<pod-ip>:/workspace/modern-robotics/
-scp -P <port> doc/MRlib.pdf root@<pod-ip>:/workspace/modern-robotics/doc/
+# Verify PDFs are there
+ls -lh MR.pdf doc/MRlib.pdf
 ```
 
-### Option C: Download from GitHub (if PDFs are in repo)
+Done! Skip to Step 6.
+
+### Option B: Using Jupyter Lab (If Available)
+
+1. In Runpod pod page, look for **HTTP Services** section
+2. Click **"Jupyter Lab"** link (Port 8888)
+3. Navigate to `/workspace/modern-robotics/`
+4. Click the Upload button (↑ icon) in the file browser
+5. Upload `MR.pdf` to `/workspace/modern-robotics/`
+6. Upload `MRlib.pdf` to `/workspace/modern-robotics/doc/`
+
+### Option C: Using SCP (From Your Local Machine)
 
 ```bash
+# From the Connect tab, copy the SSH command shown
+# It looks like: ssh root@149.36.1.79 -p 38112 -i ~/.ssh/id_ed25519
+
+# On your LOCAL machine, upload PDFs:
+scp -P 38112 -i ~/.ssh/id_ed25519 MR.pdf root@149.36.1.79:/workspace/modern-robotics/
+scp -P 38112 -i ~/.ssh/id_ed25519 doc/MRlib.pdf root@149.36.1.79:/workspace/modern-robotics/doc/
+```
+
+Replace `38112` and `149.36.1.79` with your actual port and IP from the "SSH over exposed TCP" section.
+
+### Option D: Direct Download in Terminal
+
+```bash
+# If PDFs are accessible via URL, download directly
 cd /workspace/modern-robotics
-git pull  # Should already have PDFs if they're in the repo
+wget https://your-url.com/MR.pdf
+cd doc
+wget https://your-url.com/MRlib.pdf
 ```
 
 ---
