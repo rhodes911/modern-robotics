@@ -1,0 +1,22 @@
+# GPU-Accelerated RAG Requirements
+# For Runpod or any system with NVIDIA GPU
+
+# Core dependencies
+torch>=2.0.0
+transformers>=4.35.0
+sentence-transformers>=2.2.2
+
+# RAG components
+langchain>=0.1.0
+langchain-community>=0.0.20
+chromadb>=0.4.22
+
+# PDF processing
+pypdf>=3.17.4
+
+# Ollama (for LLM generation)
+ollama>=0.1.6
+
+# Utilities
+accelerate>=0.24.0
+tiktoken>=0.5.2

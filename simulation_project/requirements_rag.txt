@@ -1,0 +1,18 @@
+# RAG Chatbot Requirements
+# Install with: pip install -r requirements_rag.txt
+
+# Core RAG components
+langchain>=0.1.0
+langchain-community>=0.0.20
+
+# Vector database
+chromadb>=0.4.22
+
+# PDF processing
+pypdf>=3.17.4
+
+# Ollama integration
+ollama>=0.1.6
+
+# Additional utilities
+tiktoken>=0.5.2

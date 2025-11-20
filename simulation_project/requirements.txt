@@ -1,0 +1,23 @@
+# Python dependencies for CoppeliaSim Robotic Arm Simulation Project
+
+# Core dependencies
+numpy>=1.24.0
+opencv-python>=4.8.0
+PyYAML>=6.0
+
+# CoppeliaSim Remote API
+coppeliasim-zmqremoteapi-client>=2.0.0
+
+# Optional: Deep learning for object detection
+# torch>=2.0.0
+# torchvision>=0.15.0
+# ultralytics>=8.0.0  # For YOLOv8
+
+# Optional: Additional robotics libraries
+# ikpy>=3.3.0
+# scipy>=1.11.0
+
+# Development tools
+# pytest>=7.4.0
+# black>=23.0.0
+# flake8>=6.0.0

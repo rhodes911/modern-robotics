@@ -1,0 +1,88 @@
+# CoppeliaSim Robotic Arm Simulation Configuration
+
+# Desk dimensions (in meters)
+desk:
+  length: 1.04  # x-axis
+  depth: 0.43   # y-axis
+  height: 0.03  # z-axis
+  position: [0, 0, 0]
+  color: [0.6, 0.4, 0.2]  # RGB brown
+
+# Robot arm configuration
+robot:
+  model: "UR5"  # Options: UR5, Panda, Custom
+  base_position: [-0.45, 0.0, 0.08]  # Left-center of desk
+  base_height: 0.05  # Elevation above desk
+  gripper_type: "parallel_jaw"  # Options: parallel_jaw, suction, custom
+
+# Objects to spawn on desk
+objects:
+  count: 6  # Just 6 objects - 2 red, 2 green, 2 blue
+  types:
+    - type: "cube"
+      size: 0.04  # Slightly bigger cubes
+      colors: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]  # Only red, green, blue
+      weight: 1.0  # Only cubes for simplicity
+  spawn_area:
+    x_min: -0.2
+    x_max: 0.2
+    y_min: -0.1
+    y_max: 0.1
+    z: 0.10  # Start objects 10cm above desk to ensure they land properly
+
+# Sorting zones
+sorting_zones:
+  - name: "red_bin"
+    position: [0.35, -0.3, 0.02]
+    size: [0.15, 0.15, 0.05]
+    color: [1, 0, 0]
+    target_color: [1, 0, 0]
+  - name: "green_bin"
+    position: [0.35, 0.0, 0.02]
+    size: [0.15, 0.15, 0.05]
+    color: [0, 1, 0]
+    target_color: [0, 1, 0]
+  - name: "blue_bin"
+    position: [0.35, 0.3, 0.02]
+    size: [0.15, 0.15, 0.05]
+    color: [0, 0, 1]
+    target_color: [0, 0, 1]
+
+# Vision sensor configuration
+vision:
+  resolution: [640, 480]
+  fov: 60  # Field of view in degrees
+  position: [-0.5, 0.0, 0.6]  # Above and behind the desk
+  target: [0.0, 0.0, 0.05]
+  near_clipping: 0.01
+  far_clipping: 2.0
+
+# CoppeliaSim connection
+coppeliasim:
+  host: "127.0.0.1"
+  port: 23002  # Updated to match your CoppeliaSim instance
+  api_type: "zmqRemoteApi"  # Options: zmqRemoteApi, legacy
+
+# Control parameters
+control:
+  ik_mode: true
+  max_velocity: 1.0  # rad/s for joints
+  max_acceleration: 2.0
+  approach_distance: 0.1  # Pre-grasp distance above object
+  grasp_force: 20  # Gripper force in Newtons
+
+# ML/AI parameters
+ml:
+  object_detection:
+    model: "color_based"  # Options: color_based, yolo, custom
+    confidence_threshold: 0.7
+  grasp_planning:
+    method: "rule_based"  # Options: rule_based, dexnet, learned
+    success_threshold: 0.8
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_images: true
+  log_trajectories: true
+  output_dir: "logs"
